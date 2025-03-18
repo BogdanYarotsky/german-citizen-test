@@ -11,94 +11,129 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { Question } from "./Question";
 
 // Quiz questions data
-const quizData = [
+const quizData: Question[] = [
   {
-    question: "What is React?",
-    options: [
-      "A JavaScript library for building user interfaces",
-      "A programming language",
-      "A database management system",
-      "A styling framework",
+    index: 0,
+    text: "What is React?",
+    answers: [
+      {
+        index: 0,
+        text: "A JavaScript library for building user interfaces",
+        correct: true,
+      },
+      { index: 1, text: "A programming language", correct: false },
+      { index: 2, text: "A database management system", correct: false },
+      { index: 3, text: "A styling framework", correct: false },
     ],
-    correctAnswer: 0,
   },
   {
-    question: "Which hook is used to manage state in functional components?",
-    options: ["useEffect", "useState", "useContext", "useReducer"],
-    correctAnswer: 1,
-  },
-  {
-    question: "What does JSX stand for?",
-    options: [
-      "JavaScript XML",
-      "Java Simple XML",
-      "JavaScript Extension",
-      "JavaScript Syntax",
+    index: 1,
+    text: "Which hook is used to manage state in functional components?",
+    answers: [
+      { index: 0, text: "useEffect", correct: false },
+      { index: 1, text: "useState", correct: true },
+      { index: 2, text: "useContext", correct: false },
+      { index: 3, text: "useReducer", correct: false },
     ],
-    correctAnswer: 0,
   },
   {
-    question: "Which of these is NOT a React hook?",
-    options: ["useEffect", "useState", "useHistory", "useComponent"],
-    correctAnswer: 3,
-  },
-  {
-    question: "What is Vite?",
-    options: [
-      "A state management library",
-      "A UI component library",
-      "A build tool and development server",
-      "A testing framework",
+    index: 2,
+    text: "What does JSX stand for?",
+    answers: [
+      { index: 0, text: "JavaScript XML", correct: true },
+      { index: 1, text: "Java Simple XML", correct: false },
+      { index: 2, text: "JavaScript Extension", correct: false },
+      { index: 3, text: "JavaScript Syntax", correct: false },
     ],
-    correctAnswer: 2,
   },
   {
-    question: "Which method is used to update state in class components?",
-    options: [
-      "this.state()",
-      "this.setState()",
-      "this.updateState()",
-      "this.changeState()",
+    index: 3,
+    text: "Which of these is NOT a React hook?",
+    answers: [
+      { index: 0, text: "useEffect", correct: false },
+      { index: 1, text: "useState", correct: false },
+      { index: 2, text: "useHistory", correct: false },
+      { index: 3, text: "useComponent", correct: true },
     ],
-    correctAnswer: 1,
   },
   {
-    question: "What is the virtual DOM?",
-    options: [
-      "A physical component inside computers",
-      "A server that hosts React applications",
-      "A lightweight copy of the actual DOM",
-      "A deprecated React feature",
+    index: 4,
+    text: "What is Vite?",
+    answers: [
+      { index: 0, text: "A state management library", correct: false },
+      { index: 1, text: "A UI component library", correct: false },
+      { index: 2, text: "A build tool and development server", correct: true },
+      { index: 3, text: "A testing framework", correct: false },
     ],
-    correctAnswer: 2,
   },
   {
-    question: "What does the useEffect hook do?",
-    options: [
-      "Manages component state",
-      "Handles side effects in functional components",
-      "Creates custom hooks",
-      "Optimizes rendering performance",
+    index: 5,
+    text: "Which method is used to update state in class components?",
+    answers: [
+      { index: 0, text: "this.state()", correct: false },
+      { index: 1, text: "this.setState()", correct: true },
+      { index: 2, text: "this.updateState()", correct: false },
+      { index: 3, text: "this.changeState()", correct: false },
     ],
-    correctAnswer: 1,
   },
   {
-    question: "What is shadcn/ui?",
-    options: [
-      "A React component library with direct imports",
-      "A CSS framework",
-      "A state management solution",
-      "A router for React applications",
+    index: 6,
+    text: "What is the virtual DOM?",
+    answers: [
+      {
+        index: 0,
+        text: "A physical component inside computers",
+        correct: false,
+      },
+      {
+        index: 1,
+        text: "A server that hosts React applications",
+        correct: false,
+      },
+      { index: 2, text: "A lightweight copy of the actual DOM", correct: true },
+      { index: 3, text: "A deprecated React feature", correct: false },
     ],
-    correctAnswer: 0,
   },
   {
-    question:
-      "Which tool is commonly used with React for global state management?",
-    options: ["React-Router", "Axios", "Redux", "Jest"],
-    correctAnswer: 2,
+    index: 7,
+    text: "What does the useEffect hook do?",
+    answers: [
+      { index: 0, text: "Manages component state", correct: false },
+      {
+        index: 1,
+        text: "Handles side effects in functional components",
+        correct: true,
+      },
+      { index: 2, text: "Creates custom hooks", correct: false },
+      { index: 3, text: "Optimizes rendering performance", correct: false },
+    ],
+  },
+  {
+    index: 8,
+    text: "What is shadcn/ui?",
+    answers: [
+      {
+        index: 0,
+        text: "A React component library with direct imports",
+        correct: true,
+      },
+      { index: 1, text: "A CSS framework", correct: false },
+      { index: 2, text: "A state management solution", correct: false },
+      { index: 3, text: "A router for React applications", correct: false },
+    ],
+  },
+  {
+    index: 9,
+    text: "Which tool is commonly used with React for global state management?",
+    answers: [
+      { index: 0, text: "React-Router", correct: false },
+      { index: 1, text: "Axios", correct: false },
+      { index: 2, text: "Redux", correct: true },
+      { index: 3, text: "Jest", correct: false },
+    ],
   },
 ];
 
@@ -114,14 +149,14 @@ function App() {
     setQuizStarted(true);
   };
 
-  const handleOptionSelect = (index: any) => {
+  const handleOptionSelect = (index) => {
     setSelectedOption(index);
   };
 
   const handleSubmit = () => {
     if (selectedOption !== null) {
       setSubmitted(true);
-      if (selectedOption === quizData[currentQuestion].correctAnswer) {
+      if (quizData[currentQuestion].answers[selectedOption].correct) {
         setScore(score + 1);
       }
     }
@@ -203,67 +238,50 @@ function App() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-xl font-bold">
-            Question {currentQuestion + 1} of {quizData.length}
+          <CardTitle className="text-lg font-semibold">
+            {quizData[currentQuestion].text}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <h2 className="text-lg font-semibold mb-4">
-            {quizData[currentQuestion].question}
-          </h2>
           <RadioGroup value={selectedOption?.toString()} className="space-y-3">
-            {quizData[currentQuestion].options.map((option, index) => (
+            {quizData[currentQuestion].answers.map((answer) => (
               <div
-                key={index}
+                key={answer.index}
                 className={`flex items-center space-x-2 p-2 rounded-md ${
-                  submitted && index === quizData[currentQuestion].correctAnswer
+                  submitted && answer.correct
                     ? "bg-green-100"
                     : submitted &&
-                      index === selectedOption &&
-                      index !== quizData[currentQuestion].correctAnswer
+                      answer.index === selectedOption &&
+                      !answer.correct
                     ? "bg-red-100"
                     : "hover:bg-gray-100"
                 }`}
               >
                 <RadioGroupItem
-                  value={index.toString()}
-                  id={`option-${index}`}
+                  value={answer.index.toString()}
+                  id={`option-${answer.index}`}
                   disabled={submitted}
-                  onClick={() => handleOptionSelect(index)}
+                  onClick={() => handleOptionSelect(answer.index)}
                 />
                 <Label
-                  htmlFor={`option-${index}`}
+                  htmlFor={`option-${answer.index}`}
                   className="flex-grow cursor-pointer"
                 >
-                  {option}
+                  {answer.text}
                 </Label>
+                {submitted && answer.correct && (
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                )}
                 {submitted &&
-                  index === quizData[currentQuestion].correctAnswer && (
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
-                  )}
-                {submitted &&
-                  index === selectedOption &&
-                  index !== quizData[currentQuestion].correctAnswer && (
+                  answer.index === selectedOption &&
+                  !answer.correct && (
                     <AlertCircle className="h-5 w-5 text-red-600" />
                   )}
               </div>
             ))}
           </RadioGroup>
-
-          {submitted && (
-            <div className="mt-4 p-3 bg-blue-50 rounded-md">
-              <p className="font-medium">
-                {selectedOption === quizData[currentQuestion].correctAnswer
-                  ? "Correct! Good job!"
-                  : "Incorrect! The correct answer is: " +
-                    quizData[currentQuestion].options[
-                      quizData[currentQuestion].correctAnswer
-                    ]}
-              </p>
-            </div>
-          )}
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex justify-center">
           {!submitted ? (
             <Button onClick={handleSubmit} disabled={selectedOption === null}>
               Submit Answer
@@ -275,9 +293,6 @@ function App() {
                 : "View Results"}
             </Button>
           )}
-          <div className="text-sm font-medium">
-            Score: {score}/{currentQuestion + (submitted ? 1 : 0)}
-          </div>
         </CardFooter>
       </Card>
     </div>
