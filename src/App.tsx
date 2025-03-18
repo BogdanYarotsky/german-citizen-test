@@ -170,7 +170,7 @@ function App() {
             <Button onClick={handleNext}>
               {currentQuestion < quizData.length - 1
                 ? "Next Question"
-                : "View Results"}
+                : "View Result"}
             </Button>
           )}
         </CardFooter>
