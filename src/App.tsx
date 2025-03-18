@@ -16,7 +16,7 @@ import { parsedQuestions } from "./data/questions";
 // Quiz questions data
 const quizData = [...parsedQuestions]
   .sort(() => Math.random() - 0.5)
-  .slice(0, 10);
+  .slice(0, 33);
 
 function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -79,9 +79,7 @@ function App() {
                 : "Keep practicing to improve your React knowledge!"}
             </p>
           </CardContent>
-          <CardFooter className="flex justify-center">
-            <Button onClick={restartQuiz}>Restart Quiz</Button>
-          </CardFooter>
+          <CardFooter className="flex justify-center" />
         </Card>
       </div>
     );
@@ -89,13 +87,17 @@ function App() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md gap-4">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold h-24 overflow-y-auto flex items-center">
-            {quizData[currentQuestion].text}
+          <CardTitle className="text-lg font-semibold flex items-center justify-between">
+            <div>
+              Frage: {currentQuestion + 1}/{quizData.length}
+            </div>
+            <div>Punkten: {score}</div>
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <h2> {quizData[currentQuestion].text}</h2>
           <RadioGroup value={selectedOption?.toString()} className="space-y-3">
             {quizData[currentQuestion].answers.map((answer) => (
               <div
