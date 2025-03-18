@@ -96,8 +96,12 @@ function App() {
             <div>Punkten: {score}</div>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <h2> {quizData[currentQuestion].text}</h2>
+        <CardContent className="space-y-4">
+          <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <h2 className="text-lg font-medium text-gray-800">
+              {quizData[currentQuestion].text}
+            </h2>
+          </div>
           <RadioGroup value={selectedOption?.toString()} className="space-y-3">
             {quizData[currentQuestion].answers.map((answer) => (
               <div
