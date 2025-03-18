@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { CircleX, CircleCheckBig } from "lucide-react";
 import { parsedQuestions } from "./data/questions";
 
-function shuffle(array: any[]) {
+function shuffle<T>(array: T[]) {
   let currentIndex = array.length;
   let randomIndex;
 
@@ -61,14 +61,6 @@ function App() {
     }
   };
 
-  const restartQuiz = () => {
-    setCurrentQuestion(0);
-    setSelectedOption(null);
-    setSubmitted(false);
-    setScore(0);
-    setQuizCompleted(false);
-  };
-
   if (quizCompleted) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -104,7 +96,7 @@ function App() {
         <CardHeader>
           <CardTitle className="text-lg font-semibold flex items-center justify-between">
             <div>
-              Frage: {currentQuestion + 1}/{quizData.length}
+              Frage {currentQuestion + 1} von {quizData.length}
             </div>
             <div>Punkten: {score}</div>
           </CardTitle>
