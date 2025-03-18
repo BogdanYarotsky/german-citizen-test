@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,7 +20,7 @@ const quizData: Question[] = parsedQuestions.slice(0, 10);
 function App() {
   const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -29,7 +29,7 @@ function App() {
     setQuizStarted(true);
   };
 
-  const handleOptionSelect = (index) => {
+  const handleOptionSelect = (index: number) => {
     setSelectedOption(index);
   };
 
