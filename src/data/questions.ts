@@ -3,13 +3,17 @@ import { FlatQuestion } from "../FlatQuestion";
 import { Question } from "../Question";
 
 export const parsedQuestions: Question[] = (questions as FlatQuestion[]).map(
-  ([question, answers, correctIndex], index) => ({
-    index,
-    text: question,
-    answers: answers.map((text, index) => ({
-      index,
-      text,
-      correct: index === correctIndex,
-    })),
-  })
+  (flatQuestion, questionIndex) => {
+    const [questionText, answers, correctIndex] = flatQuestion;
+
+    return {
+      index: questionIndex,
+      text: questionText,
+      answers: answers.map((text, answerIndex) => ({
+        index: answerIndex,
+        text,
+        correct: answerIndex === correctIndex,
+      })),
+    };
+  }
 );
