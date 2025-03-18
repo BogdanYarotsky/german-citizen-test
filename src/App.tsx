@@ -4,6 +4,8 @@ import questions from "./assets/questions.json";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { Button } from "./components/ui/button";
+import { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
+import { Label } from "./components/ui/label";
 
 type FlatQuestion = [string, string[], number];
 
@@ -20,16 +22,30 @@ type Question = {
 };
 
 function QuestionComponent({ question }: { question: Question }) {
+  const [selectedAnswer, setSelectedAnswer] = useState<string | undefined>(
+    undefined
+  );
+
   return (
-    <div>
-      <h2>
-        {question.index}) {question.text}
-      </h2>
-      <ul>
+    <div className="space-y-4 mb-6 p-4 border rounded-lg">
+      <h2 className="text-xl font-semibold">{question.text}</h2>
+      <RadioGroup
+        onValueChange={setSelectedAnswer}
+        value={selectedAnswer}
+        className="space-y-2"
+      >
         {question.answers.map((answer) => (
-          <li key={answer.index}>{answer.text}</li>
+          <div key={answer.index} className="flex items-center space-x-2">
+            <RadioGroupItem
+              value={answer.index.toString()}
+              id={`q${question.index}-a${answer.index}`}
+            />
+            <Label htmlFor={`q${question.index}-a${answer.index}`}>
+              {answer.text}
+            </Label>
+          </div>
         ))}
-      </ul>
+      </RadioGroup>
     </div>
   );
 }
@@ -51,32 +67,9 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-svh">
-        <Button>Click me</Button>
-      </div>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       {parsedQuestions.map((q) => (
         <QuestionComponent key={q.index} question={q} />
       ))}
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
