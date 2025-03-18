@@ -13,10 +13,23 @@ import { Label } from "@/components/ui/label";
 import { CircleX, CircleCheckBig } from "lucide-react";
 import { parsedQuestions } from "./data/questions";
 
-// Quiz questions data
-const quizData = [...parsedQuestions]
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 33);
+function shuffle(array: any[]) {
+  let currentIndex = array.length;
+  let randomIndex;
+
+  while (currentIndex > 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
+
+const quizData = shuffle([...parsedQuestions]).slice(0, 33);
 
 function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
