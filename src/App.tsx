@@ -1,4 +1,3 @@
-// App.jsx
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,29 +12,26 @@ import { Label } from "@/components/ui/label";
 import { CircleX, CircleCheckBig } from "lucide-react";
 import { parsedQuestions } from "./data/questions";
 
-function shuffle<T>(array: T[]) {
-  let currentIndex = array.length;
-  let randomIndex;
+function shuffle<T>(array: T[]): T[] {
+  const newArray = [...array];
 
-  while (currentIndex > 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
 
-  return array;
+  return newArray;
 }
 
-const quizData = shuffle([...parsedQuestions]).slice(0, 33);
+const quizData = shuffle(parsedQuestions)
+  .slice(0, 33)
+  .map((q) => ({ ...q, answers: shuffle(q.answers) }));
 
 function App() {
+  const [score, setScore] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   const handleOptionSelect = (index: number) => {
@@ -129,7 +125,7 @@ function App() {
                 />
                 <Label
                   htmlFor={`option-${answer.index}`}
-                  className="flex-grow cursor-pointer"
+                  className="flex-grow cursor-pointer select-auto"
                 >
                   {answer.text}
                 </Label>
@@ -147,7 +143,11 @@ function App() {
         </CardContent>
         <CardFooter className="flex justify-center">
           {!submitted ? (
-            <Button onClick={handleSubmit} disabled={selectedOption === null}>
+            <Button
+              className="px-5 py-3.5 text-base"
+              onClick={handleSubmit}
+              disabled={selectedOption === null}
+            >
               Antwort senden
             </Button>
           ) : (
