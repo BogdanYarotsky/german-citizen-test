@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,25 +12,24 @@ import { Label } from "@/components/ui/label";
 import { CircleX, CircleCheckBig } from "lucide-react";
 import { parsedQuestions } from "./data/questions";
 
-function shuffle<T>(array: T[]): T[] {
-  const newArray = [...array];
+function shuffle<T>(input: T[]): T[] {
+  const output = [...input];
 
-  for (let i = newArray.length - 1; i > 0; i--) {
+  for (let i = output.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    [output[i], output[j]] = [output[j], output[i]];
   }
 
-  return newArray;
+  return output;
 }
 
-const quizData = shuffle(parsedQuestions)
-  .slice(0, 33)
-  .map((q) => ({ ...q, answers: shuffle(q.answers) }));
+const quizData = shuffle(parsedQuestions).slice(0, 33);
+//.map((q) => ({ ...q, answers: shuffle(q.answers) }));
 
 function App() {
   const [score, setScore] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const [selectedOption, setSelectedOption] = useState<number | undefined>();
   const [submitted, setSubmitted] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
 
@@ -39,7 +38,7 @@ function App() {
   };
 
   const handleSubmit = () => {
-    if (selectedOption !== null) {
+    if (selectedOption !== undefined) {
       setSubmitted(true);
       if (quizData[currentQuestion].answers[selectedOption].correct) {
         setScore(score + 1);
@@ -50,7 +49,7 @@ function App() {
   const handleNext = () => {
     if (currentQuestion < quizData.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-      setSelectedOption(null);
+      setSelectedOption(undefined);
       setSubmitted(false);
     } else {
       setQuizCompleted(true);
@@ -97,64 +96,74 @@ function App() {
             <div>Punkten: {score}</div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+        <CardContent className="space-y-4 min-h-[400px]">
+          <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-100">
             <h2 className="text-lg font-medium text-gray-800">
               {quizData[currentQuestion].text}
             </h2>
           </div>
-          <RadioGroup value={selectedOption?.toString()} className="space-y-3">
-            {quizData[currentQuestion].answers.map((answer) => (
-              <div
-                key={answer.index}
-                className={`flex items-center space-x-2 p-2 rounded-md ${
-                  submitted && answer.correct
-                    ? "bg-green-100"
-                    : submitted &&
-                      answer.index === selectedOption &&
-                      !answer.correct
-                    ? "bg-red-100"
-                    : "hover:bg-gray-100"
-                }`}
-              >
-                <RadioGroupItem
-                  value={answer.index.toString()}
-                  id={`option-${answer.index}`}
-                  disabled={submitted}
-                  onClick={() => handleOptionSelect(answer.index)}
-                />
-                <Label
-                  htmlFor={`option-${answer.index}`}
-                  className="flex-grow cursor-pointer select-auto"
+          <RadioGroup
+            key={currentQuestion}
+            className="space-y-3"
+            value={selectedOption?.toString()}
+            onValueChange={(value) => handleOptionSelect(parseInt(value))}
+          >
+            {quizData[currentQuestion].answers.map((answer) => {
+              const id = `option-${currentQuestion}-${answer.index}`;
+              return (
+                <div
+                  key={answer.index}
+                  className={`rounded-md ${
+                    submitted && answer.correct
+                      ? "bg-green-100"
+                      : submitted &&
+                        answer.index === selectedOption &&
+                        !answer.correct
+                      ? "bg-red-100"
+                      : "hover:bg-gray-100"
+                  }`}
                 >
-                  {answer.text}
-                </Label>
-                {submitted && answer.correct && (
-                  <CircleCheckBig className="h-5 w-5 text-green-600" />
-                )}
-                {submitted &&
-                  answer.index === selectedOption &&
-                  !answer.correct && (
-                    <CircleX className="h-5 w-5 text-red-600" />
-                  )}
-              </div>
-            ))}
+                  <Label
+                    htmlFor={id}
+                    className="flex items-center space-x-2 p-2 cursor-pointer w-full"
+                  >
+                    <RadioGroupItem
+                      value={answer.index.toString()}
+                      id={id}
+                      disabled={submitted}
+                    />
+                    <span className="flex-grow select-auto">{answer.text}</span>
+                    {submitted && answer.correct && (
+                      <CircleCheckBig className="h-4 w-4 text-green-600 flex-shrink-0" />
+                    )}
+                    {submitted &&
+                      answer.index === selectedOption &&
+                      !answer.correct && (
+                        <CircleX className="h-4 w-4 text-red-600 flex-shrink-0" />
+                      )}
+                  </Label>
+                </div>
+              );
+            })}
           </RadioGroup>
         </CardContent>
         <CardFooter className="flex justify-center">
-          {!submitted ? (
+          {submitted ? (
             <Button
-              className="px-5 py-3.5 text-base"
-              onClick={handleSubmit}
-              disabled={selectedOption === null}
+              className="px-5 py-3.5 text-base w-[160px]"
+              onClick={handleNext}
             >
-              Antwort senden
+              {currentQuestion < quizData.length - 1
+                ? "Nächste Frage →"
+                : "Ergebnis anzeigen"}
             </Button>
           ) : (
-            <Button onClick={handleNext}>
-              {currentQuestion < quizData.length - 1
-                ? "Nächste Frage"
-                : "Ergebnis anzeigen"}
+            <Button
+              className="px-5 py-3.5 text-base  w-[160px]"
+              onClick={handleSubmit}
+              disabled={selectedOption === undefined}
+            >
+              Antwort senden ✓
             </Button>
           )}
         </CardFooter>
