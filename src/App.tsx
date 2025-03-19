@@ -132,7 +132,7 @@ function App() {
                       id={id}
                       disabled={submitted}
                     />
-                    <span className="flex-grow select-auto">{answer.text}</span>
+                    <span className="flex-grow select-text">{answer.text}</span>
                     {submitted && answer.correct && (
                       <CircleCheckBig className="h-4 w-4 text-green-600 flex-shrink-0" />
                     )}
